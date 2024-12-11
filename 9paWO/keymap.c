@@ -77,3 +77,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
 
+// Custom
+
+uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case LT(1, KC_SPACE):
+      return 0;
+
+    default:
+      return QUICK_TAP_TERM;
+  }
+}
