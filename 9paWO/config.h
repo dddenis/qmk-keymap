@@ -17,3 +17,4 @@
 // Custom
 
 #define QUICK_TAP_TERM_PER_KEY
+#define MAX_DEFERRED_EXECUTORS 10
