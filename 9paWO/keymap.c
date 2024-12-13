@@ -8,14 +8,25 @@
 
 enum custom_keycodes {
   SMTD_KEYCODES_BEGIN = SAFE_RANGE,
+
+  // Left HMR
   CKC_A,
   CKC_S,
   CKC_D,
   CKC_F,
+
+  // Left thump cluster
+  CKC_SPC,
+
+  // Right thump cluster
+  CKC_BSPC,
+
+  // Right HMR
   CKC_J,
   CKC_K,
   CKC_L,
   CKC_SCLN,
+
   SMTD_KEYCODES_END,
 
   RGB_SLD = ML_SAFE_RANGE,
@@ -30,7 +41,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TMUX,           KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLS,        
     MT(MOD_LSFT, KC_ESCAPE),CKC_A,  CKC_S,          CKC_D,          CKC_F,          KC_G,                                           KC_H,           CKC_J,          CKC_K,          CKC_L,          CKC_SCLN,       KC_QUOTE,       
     KC_LEFT_GUI,    KC_Z,           MT(MOD_LCTL, KC_X),KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       CW_TOGG,        
-                                                    LT(1,KC_SPACE), KC_TAB,                                         KC_ENTER,       LT(2,KC_BSPC)
+                                                    CKC_SPC,        KC_TAB,                                         KC_ENTER,       CKC_BSPC
   ),
   [1] = LAYOUT_voyager(
     KC_ESCAPE,      KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,                                          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         
@@ -107,14 +118,22 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t *record) {
 
 void on_smtd_action(uint16_t keycode, smtd_action action, uint8_t tap_count) {
   switch (keycode) {
-    SMTD_MT(CKC_A, KC_A, KC_LGUI)
-    SMTD_MT(CKC_S, KC_S, KC_LALT)
-    SMTD_MT(CKC_D, KC_D, KC_LCTL)
-    SMTD_MT(CKC_F, KC_F, KC_LSFT)
+    // Left HMR
+    SMTD_MT(CKC_A, KC_A, KC_LGUI, 1)
+    SMTD_MT(CKC_S, KC_S, KC_LALT, 1)
+    SMTD_MT(CKC_D, KC_D, KC_LCTL, 1)
+    SMTD_MT(CKC_F, KC_F, KC_LSFT, 1)
 
-    SMTD_MT(CKC_J, KC_J, KC_RSFT)
-    SMTD_MT(CKC_K, KC_K, KC_RCTL)
-    SMTD_MT(CKC_L, KC_L, KC_LALT)
-    SMTD_MT(CKC_SCLN, KC_SCLN, KC_RGUI)
+    // Left thumb cluster
+    SMTD_LT(CKC_SPC, KC_SPC, 1, 2)
+
+    // Right thumb cluster
+    SMTD_LT(CKC_BSPC, KC_BSPC, 2, 2)
+
+    // Right HMR
+    SMTD_MT(CKC_J, KC_J, KC_RSFT, 1)
+    SMTD_MT(CKC_K, KC_K, KC_RCTL, 1)
+    SMTD_MT(CKC_L, KC_L, KC_LALT, 1)
+    SMTD_MT(CKC_SCLN, KC_SCLN, KC_RGUI, 1)
   }
 }
