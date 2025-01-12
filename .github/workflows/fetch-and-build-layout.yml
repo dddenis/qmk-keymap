@@ -8,9 +8,19 @@ on:
         required: true
         default: "9paWO"
       layout_geometry:
-        description: "voyager | moonlander | ergodox_ez | ergodox_ez/stm32/glow | ergodox_ez/stm32/shine | ergodox_ez/m32u4/glow | ergodox_ez/m32u4/shine | planck_ez | planck_ez/glow"
-        required: true
-        default: "voyager"
+        description: "Keyboard type"
+        type: choice
+        options:
+          - voyager
+          - moonlander
+          - ergodox_ez
+          - ergodox_ez/stm32/glow
+          - ergodox_ez/stm32/shine
+          - ergodox_ez/m32u4/glow
+          - ergodox_ez/m32u4/shine
+          - planck_ez
+          - planck_ez/glow
+        default: voyager
 
 permissions:
   contents: write
@@ -64,13 +74,16 @@ jobs:
           git merge -Xignore-all-space oryx
           git push
 
-      - name: Checkout the right firmware branch
+      - name: Update QMK firmware submodule to latest version (${{ steps.download-layout-source.outputs.firmware_version }})
         run: |
+          git submodule update --init --remote --depth=1
           cd qmk_firmware
-          git submodule update --init --remote
-          git fetch origin firmware${{ steps.download-layout-source.outputs.firmware_version }}
           git checkout -B firmware${{ steps.download-layout-source.outputs.firmware_version }} origin/firmware${{ steps.download-layout-source.outputs.firmware_version }}
           git submodule update --init --recursive
+          cd ..
+          git add qmk_firmware
+          git commit -m "✨(qmk): Update firmware" || echo "No QMK change"
+          git push
 
       - name: Build qmk docker image
         run: docker build -t qmk .
